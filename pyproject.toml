@@ -1,0 +1,25 @@
+[project]
+name = "music-studio-data-case"
+version = "0.1.0"
+description = "ETL Process for Music Studio pet project."
+authors = [    
+    {name = "Anastasiia Zakharova <zakhaa01>"},
+]
+dependencies = [    
+    "pre-commit==3.6.2",    
+    "pylint==3.1.0",    
+    "pandas==2.2.3",
+    "matplotlib==3.9.2",
+    "seaborn==0.13.2",
+    "numpy==2.0.2",
+]
+readme = "README.md"
+requires-python = ">= 3.9"
+
+[tool.rye]
+managed = true
+virtual = true
+dev-dependencies = []
+
+[tool.mypy]
+disable_error_code = "import-untyped"

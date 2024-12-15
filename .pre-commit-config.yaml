@@ -1,0 +1,35 @@
+# Check for some common conventions in all files
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+    -   id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md, --markdown-linebreak-ext=py]
+        description: For md and python files, allow double whitespace for hard line break
+    -   id: end-of-file-fixer
+    -   id: detect-private-key
+    -   id: check-yaml
+    -   id: check-json
+    -   id: check-added-large-files
+    -   id: requirements-txt-fixer # Sorts entries in requirements.txt
+# Check that terraform has no obvious errors
+- repo: https://github.com/antonbabenko/pre-commit-terraform
+  rev: v1.83.6
+  hooks:
+    - id: terraform_fmt
+      args: [--args=-no-color]
+    - id: terraform_tflint
+      args: [--args=--config=__GIT_WORKING_DIR__/.tflint.hcl]
+    - id: terraform_validate
+      exclude: 'infrastructure/live/'
+- repo: https://github.com/psf/black-pre-commit-mirror
+  rev: 23.11.0
+  hooks:
+    - id: black
+- repo: local
+  hooks:
+    - id: pylint
+      name: pylint
+      entry: pylint
+      language: system
+      types: [python]
