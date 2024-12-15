@@ -27,6 +27,7 @@ CONN_URL: str = os.getenv("music_db_conn_url", None)
 CONN = sq.connect(CONN_URL)
 TABLE_NAMES: list = ["Track", "Album", "Genre", "InvoiceLine"]
 
+
 def read_data_from_db(connection, table_names) -> dict:
     """
     Reads tables from database.
@@ -49,7 +50,7 @@ def rename_columns(
     track_df: pd.DataFrame,
     album_df: pd.DataFrame,
     genre_df: pd.DataFrame,
-    invoiceline_df: pd.DataFrame
+    invoiceline_df: pd.DataFrame,
 ) -> tuple:
     """
     Rename columns in staging DataFrames to avoid duplication during merging.
@@ -74,7 +75,7 @@ def merge_dfs(
     track_df: pd.DataFrame,
     album_df: pd.DataFrame,
     genre_df: pd.DataFrame,
-    invoiceline_df: pd.DataFrame
+    invoiceline_df: pd.DataFrame,
 ) -> tuple:
     """
     Merge DataFrames for further analysis.
@@ -89,13 +90,17 @@ def merge_dfs(
         tuple: New merged DataFrames.
     """
     # Merging dataframes that show sales data
-    join_invoice_df = invoiceline_df.merge(track_df, how="left", on=["TrackId", "UnitPrice"])
+    join_invoice_df = invoiceline_df.merge(
+        track_df, how="left", on=["TrackId", "UnitPrice"]
+    )
     join_genre_df = join_invoice_df.merge(genre_df, how="left", on="GenreId")
     join_album_df = join_genre_df.merge(album_df, how="left", on="AlbumId")
 
     # Merging dataframes that show quantity data
     join_track_df = track_df.merge(genre_df, how="left", on="GenreId")
-    join_track_plus_sales_df = join_track_df.merge(invoiceline_df, how="left", on="TrackId")
+    join_track_plus_sales_df = join_track_df.merge(
+        invoiceline_df, how="left", on="TrackId"
+    )
 
     return join_album_df, join_genre_df, join_track_plus_sales_df
 
@@ -103,7 +108,7 @@ def merge_dfs(
 def aggregate_dfs(
     join_album_df: pd.DataFrame,
     join_genre_df: pd.DataFrame,
-    join_track_plus_sales_df: pd.DataFrame
+    join_track_plus_sales_df: pd.DataFrame,
 ) -> tuple:
     """
     Aggregated calculations for new data granularity.
@@ -123,23 +128,26 @@ def aggregate_dfs(
 
     # Groupby best albums
     album_count = {"InvoiceId": ["count"], "UnitPrice": ["sum"]}
-    album_df_agg = join_album_df.groupby([
-        "Album_title",
-        "Genre_name"
-    ]).agg(album_count).reset_index()
+    album_df_agg = (
+        join_album_df.groupby(["Album_title", "Genre_name"])
+        .agg(album_count)
+        .reset_index()
+    )
 
     album_df_agg.columns = ["Album_title", "Genre_name", "InvoiceId", "UnitPrice"]
 
     # Groupby count of sales in each genre
-    track_inv_df_agg = join_track_plus_sales_df.groupby([
-        "Genre_name",
-        "Track_name"
-    ]).agg(Bin = ("InvoiceId", "count")).reset_index()
+    track_inv_df_agg = (
+        join_track_plus_sales_df.groupby(["Genre_name", "Track_name"])
+        .agg(Bin=("InvoiceId", "count"))
+        .reset_index()
+    )
 
-    bin_count_df = track_inv_df_agg.groupby([
-        "Genre_name",
-        "Bin"
-    ]).agg(Bin_count = ("Bin", "count")).reset_index()
+    bin_count_df = (
+        track_inv_df_agg.groupby(["Genre_name", "Bin"])
+        .agg(Bin_count=("Bin", "count"))
+        .reset_index()
+    )
 
     return album_df_agg, genre_df_agg, bin_count_df
 
@@ -170,7 +178,7 @@ def transform_df(
     track_df: pd.DataFrame,
     album_df: pd.DataFrame,
     genre_df: pd.DataFrame,
-    invoiceline_df: pd.DataFrame
+    invoiceline_df: pd.DataFrame,
 ) -> tuple:
     """
     Stage raw data for plotting.
@@ -182,21 +190,13 @@ def transform_df(
         pd.DataFrame: Staging data.
     """
     track_df, album_df, genre_df, invoiceline_df = rename_columns(
-        track_df,
-        album_df,
-        genre_df,
-        invoiceline_df
+        track_df, album_df, genre_df, invoiceline_df
     )
     join_album_df, join_genre_df, join_track_plus_sales_df = merge_dfs(
-        track_df,
-        album_df,
-        genre_df,
-        invoiceline_df
+        track_df, album_df, genre_df, invoiceline_df
     )
     album_df_agg, genre_df_agg, bin_count_df = aggregate_dfs(
-        join_album_df,
-        join_genre_df,
-        join_track_plus_sales_df
+        join_album_df, join_genre_df, join_track_plus_sales_df
     )
     top_10_albums, top_5_genres = get_top_records(album_df_agg, genre_df_agg)
 
@@ -213,7 +213,7 @@ def create_plot(  # pylint: disable=too-many-arguments
     ylabel,
     palette="bright",
     rotation=80,
-    plot_name=""
+    plot_name="",
 ):
     """
     Plots a bar or scatter chart for different data.
@@ -237,7 +237,9 @@ def create_plot(  # pylint: disable=too-many-arguments
     if plot_type == "bar":
         plot = sns.barplot(data=data, x=x_col, y=y_col, hue=hue_col, palette=palette)
     else:
-        plot = sns.scatterplot(data=data, x=x_col, y=y_col, hue=hue_col, palette=palette)
+        plot = sns.scatterplot(
+            data=data, x=x_col, y=y_col, hue=hue_col, palette=palette
+        )
 
     plot.set_xlabel(xlabel, fontsize=10)
     plot.set_ylabel(ylabel, fontsize=10)
@@ -254,9 +256,7 @@ def create_plot(  # pylint: disable=too-many-arguments
 
 
 def upload_plots(
-    top_10_albums: pd.DataFrame,
-    top_5_genres: pd.DataFrame,
-    bin_count_df: pd.DataFrame
+    top_10_albums: pd.DataFrame, top_5_genres: pd.DataFrame, bin_count_df: pd.DataFrame
 ):
     """
     Upload plots to the folder /plots.
@@ -277,7 +277,7 @@ def upload_plots(
         ylabel="Number of sales",
         palette="bright",
         rotation=80,
-        plot_name="top10_albums.png"
+        plot_name="top10_albums.png",
     )
 
     # Create bar plot for top-5 genres
@@ -291,7 +291,7 @@ def upload_plots(
         ylabel="Number of sales",
         palette="bright",
         rotation=80,
-        plot_name="top5_genres.png"
+        plot_name="top5_genres.png",
     )
 
     # Create scatter plot for count of sales in each genre
@@ -305,7 +305,7 @@ def upload_plots(
         ylabel="Number of sales",
         palette="bright",
         rotation=80,
-        plot_name="count_of_sales_in_each_genre.png"
+        plot_name="count_of_sales_in_each_genre.png",
     )
 
 
@@ -324,10 +324,7 @@ def main():
 
     # Transform data to the shape and format
     top_10_albums, top_5_genres, bin_count_df = transform_df(
-        track_df,
-        album_df,
-        genre_df,
-        invoiceline_df
+        track_df, album_df, genre_df, invoiceline_df
     )
 
     # Load data to the object storage
