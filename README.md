@@ -18,6 +18,6 @@ This is a project for analyzing the test music data set in SQLite database. The 
 #### Data Wrangling
 * <b>Pandas</b> for basic ETL functions such as reading data from sending queries for establishing connection and transforming row data for plotting.
 
-#### Visualisation
+#### Visualization
 * <b>Matplotlib</b> for changing plot settings for data needing.
 * <b>Seaborn</b> for creating bar plots and scatter plots to visualize data analysis.
