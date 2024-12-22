@@ -24,7 +24,6 @@ log.setLevel(logging.DEBUG)
 # Various Globals
 PLOTS_PATH: str = "./output/plots/"
 CONN_URL: str = os.getenv("music_db_conn_url", None)
-CONN = sq.connect(CONN_URL)
 TABLE_NAMES: list = ["Track", "Album", "Genre", "InvoiceLine"]
 
 
@@ -314,9 +313,12 @@ def main():
 
     log.info("Starting the data processing pipeline...")
 
-    dataframes = read_data_from_db(CONN, TABLE_NAMES)
+    # SQLite Connection init
+    conn = sq.connect(CONN_URL)
 
     # Read tables from database
+    dataframes = read_data_from_db(conn, TABLE_NAMES)
+
     track_df = dataframes["Track"]
     album_df = dataframes["Album"]
     genre_df = dataframes["Genre"]
