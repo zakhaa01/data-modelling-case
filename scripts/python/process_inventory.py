@@ -41,6 +41,7 @@ def read_data_from_db(connection, table_names) -> dict:
     dataframes = {}
     for table in table_names:
         dataframes[table] = pd.read_sql(f"SELECT * FROM {table}", connection)
+        log.info("Reading %s.", table_names)
 
     return dataframes
 
@@ -191,13 +192,24 @@ def transform_df(
     track_df, album_df, genre_df, invoiceline_df = rename_columns(
         track_df, album_df, genre_df, invoiceline_df
     )
+
+    log.info("Columns have been renamed.")
+
     join_album_df, join_genre_df, join_track_plus_sales_df = merge_dfs(
         track_df, album_df, genre_df, invoiceline_df
     )
+
+    log.info("Merging dataframes ended.")
+
     album_df_agg, genre_df_agg, bin_count_df = aggregate_dfs(
         join_album_df, join_genre_df, join_track_plus_sales_df
     )
+
+    log.info("Aggregating dataframes ended.")
+
     top_10_albums, top_5_genres = get_top_records(album_df_agg, genre_df_agg)
+
+    log.info("Top records dataframes created.")
 
     return top_10_albums, top_5_genres, bin_count_df
 
@@ -229,6 +241,7 @@ def create_plot(  # pylint: disable=too-many-arguments
         rotation: Rotation angle for x-axis labels (default is 80).
         plot_name: Plot name that you want to save. !!!Be sure to add .png in the end.!!!
     """
+    log.info("Creating %s.", plot_name)
 
     plt.figure()
 
@@ -307,6 +320,8 @@ def upload_plots(
         plot_name="count_of_sales_in_each_genre.png",
     )
 
+    log.info("Plots uploaded.")
+
 
 def main():
     """Main process"""
@@ -316,13 +331,15 @@ def main():
     # SQLite Connection init
     conn = sq.connect(CONN_URL)
 
+    log.info("Successfull connection with database.")
+
     # Read tables from database
     dataframes = read_data_from_db(conn, TABLE_NAMES)
-
     track_df = dataframes["Track"]
     album_df = dataframes["Album"]
     genre_df = dataframes["Genre"]
     invoiceline_df = dataframes["InvoiceLine"]
+    log.info("All tables have been read.")
 
     # Transform data to the shape and format
     top_10_albums, top_5_genres, bin_count_df = transform_df(
