@@ -40,8 +40,8 @@ def read_data_from_db(connection, table_names) -> dict:
     """
     dataframes = {}
     for table in table_names:
-        dataframes[table] = pd.read_sql(f"SELECT * FROM {table}", connection)
         log.info("Reading %s.", table_names)
+        dataframes[table] = pd.read_sql(f"SELECT * FROM {table}", connection)
 
     return dataframes
 
