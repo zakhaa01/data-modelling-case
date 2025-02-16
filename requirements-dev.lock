@@ -11,8 +11,12 @@
 
 astroid==3.1.0
     # via pylint
+certifi==2024.12.14
+    # via requests
 cfgv==3.4.0
     # via pre-commit
+charset-normalizer==3.4.1
+    # via requests
 contourpy==1.3.0
     # via matplotlib
 cycler==0.12.1
@@ -25,8 +29,12 @@ filelock==3.16.1
     # via virtualenv
 fonttools==4.55.3
     # via matplotlib
+greenlet==3.1.1
+    # via sqlalchemy
 identify==2.6.3
     # via pre-commit
+idna==3.10
+    # via requests
 importlib-resources==6.4.5
     # via matplotlib
 isort==5.13.2
@@ -54,6 +62,8 @@ platformdirs==4.3.6
     # via pylint
     # via virtualenv
 pre-commit==3.6.2
+psycopg2==2.9.10
+psycopg2-binary==2.9.10
 pylint==3.1.0
 pyparsing==3.2.0
     # via matplotlib
@@ -64,9 +74,11 @@ pytz==2024.2
     # via pandas
 pyyaml==6.0.2
     # via pre-commit
+requests==2.32.3
 seaborn==0.13.2
 six==1.17.0
     # via python-dateutil
+sqlalchemy==2.0.37
 tomli==2.2.1
     # via pylint
 tomlkit==0.13.2
@@ -74,8 +86,11 @@ tomlkit==0.13.2
 typing-extensions==4.12.2
     # via astroid
     # via pylint
+    # via sqlalchemy
 tzdata==2024.2
     # via pandas
+urllib3==2.3.0
+    # via requests
 virtualenv==20.28.0
     # via pre-commit
 zipp==3.21.0

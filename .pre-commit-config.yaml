@@ -1,5 +1,5 @@
 # Check for some common conventions in all files
-repos:
+repos:    # TODO: update
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
