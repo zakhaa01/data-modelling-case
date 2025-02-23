@@ -1,0 +1,20 @@
+version: 2
+
+models:
+
+  - name: stg__test
+    description: " #TODO: Finish"
+    columns:
+      - name: movie_id
+        description: unique TMDB movie id.
+        tests:
+          - unique
+          - not_null
+      - name: release_date
+        description: Local timezone release date.
+        tests:
+          - not_null
+      - name: extracted_at_utc
+        description: Timestamp of the API data extraction.
+        tests:
+          - not_null

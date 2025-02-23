@@ -1,0 +1,12 @@
+default:
+  outputs:
+    dev:
+      host: "{{ env_var('TMDB_HOST') }}"
+      user: "{{ env_var('TMDB_USERNAME') }}"
+      password: "{{ env_var('TMDB_PASSWORD') }}"
+      schema: "{{ env_var('DEFAULT_SCHEMA') }}"
+      dbname: "{{ env_var('ENV') ~ '_tmdb_dwh' }}"
+      port: 5432
+      threads: 2
+      type: postgres
+  target: dev
