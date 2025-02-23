@@ -1,0 +1,39 @@
+version: 2
+
+sources:
+  - name: raw
+    description: >
+      TODO: complete it!
+      Source: https://xx
+      Documentation: https://yy
+    schema: analytics_raw
+    meta:
+      tech-owner: email.com
+      business-owner: email.com
+    tags: ["product: data-modelling-case"]
+    # Uncomment to check freshness of source data: is source still updating regularly?
+    # loaded_at_field: loaded_to_s3_at
+    # freshness:
+    #   warn_after: {count: 24, period: hour}  # No value in loaded_at_field in last 24h
+    #   error_after: {count: 48, period: hour} # Error
+
+    tables:
+      - name: movies
+        description: raw tmdb data extracted from API.
+        meta:
+          tech-owner: email.com
+          business-owner: email.com
+        columns:
+          - name: movie_id
+            description: unique TMDB movie id.
+            tests:
+              - unique
+              - not_null
+          - name: release_date
+            description: Local timezone release date.
+            tests:
+              - not_null
+          - name: extracted_at_utc
+            description: Timestamp of the API data extraction.
+            tests:
+              - not_null
