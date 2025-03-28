@@ -3,34 +3,155 @@ version: 2
 sources:
   - name: raw
     description: >
-      TODO: complete it!
-      Source: https://xx
-      Documentation: https://yy
+      raw tmdb data extracted from API.
+      Source: https://developer.themoviedb.org/reference/intro/getting-started
+      Documentation: https://developer.themoviedb.org/docs/getting-started
     schema: analytics_raw
     meta:
       tech-owner: email.com
       business-owner: email.com
     tags: ["product: data-modelling-case"]
-    # Uncomment to check freshness of source data: is source still updating regularly?
-    # loaded_at_field: loaded_to_s3_at
-    # freshness:
-    #   warn_after: {count: 24, period: hour}  # No value in loaded_at_field in last 24h
-    #   error_after: {count: 48, period: hour} # Error
 
     tables:
       - name: movies
-        description: raw tmdb data extracted from API.
+        description: raw tmdb top rated movies data extracted from API.
         meta:
           tech-owner: email.com
           business-owner: email.com
         columns:
           - name: movie_id
-            description: unique TMDB movie id.
+            description: Unique TMDB movie id.
+            tests:
+              - unique
+              - not_null
+          - name: title
+            description: Movie title.
+            tests:
+              - not_null
+          - name: country_code
+            description: Country code where the movie made by.
+            tests:
+              - not_null
+          - name: tagline
+            description: The tagline of the movie.
+            tests:
+              - unique
+              - not_null
+          - name: overview
+            description: Short movie overview.
             tests:
               - unique
               - not_null
           - name: release_date
             description: Local timezone release date.
+            tests:
+              - not_null
+          - name: popularity
+            description: The count of movie views.
+            tests:
+              - not_null
+          - name: rating_avg
+            description: Average rating of the movie.
+            tests:
+              - not_null
+          - name: vote_count
+            description: Count of votes.
+            tests:
+              - not_null
+          - name: budget_usd
+            description: Movie budget in USD.
+            tests:
+              - not_null
+          - name: revenue_usd
+            description: Movie revenue in USD.
+            tests:
+              - not_null
+          - name: extracted_at_utc
+            description: Timestamp of the API data extraction.
+            tests:
+              - not_null
+
+      - name: credits
+        description: raw tmdb movie credits data extracted from API.
+        meta:
+          tech-owner: email.com
+          business-owner: email.com
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - movie_id
+                - actor_id
+        columns:
+          - name: movie_id
+            description: Unique TMDB movie id.
+            tests:
+              - not_null
+          - name: actor_id
+            description: Unique TMDB actor id.
+            tests:
+              - not_null
+          - name: actor_name
+            description: Name of the actor.
+            tests:
+              - not_null
+          - name: character_name
+            description: Character name who played by assotiated actor.
+            tests:
+              - not_null
+          - name: extracted_at_utc
+            description: Timestamp of the API data extraction.
+            tests:
+              - not_null
+
+      - name: movies_genre
+        description: raw tmdb movies genre data extracted from API.
+        meta:
+          tech-owner: email.com
+          business-owner: email.com
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - movie_id
+                - genre_id
+        columns:
+          - name: movie_id
+            description: Unique TMDB movie id.
+            tests:
+              - not_null
+          - name: genre_id
+            description: Unique TMDB genre id.
+            tests:
+              - not_null
+          - name: genre_name
+            description: Name of the genre.
+            tests:
+              - not_null
+          - name: extracted_at_utc
+            description: Timestamp of the API data extraction.
+            tests:
+              - not_null
+
+      - name: similar
+        description: raw tmdb similar movies data extracted from API.
+        meta:
+          tech-owner: email.com
+          business-owner: email.com
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - movie_id
+                - similar_movie_id
+        columns:
+          - name: movie_id
+            description: Unique TMDB movie id.
+            tests:
+              - not_null
+          - name: similar_movie_id
+            description: Unique TMDB similar movie id.
+            tests:
+              - not_null
+          - name: similar_movie_name
+            description: Name of the similar movie.
             tests:
               - not_null
           - name: extracted_at_utc

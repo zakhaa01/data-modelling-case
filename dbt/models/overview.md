@@ -1,11 +1,22 @@
 {% docs __overview__ %}
 
-## Data Documentation for Jaffle Shop
+# Data Documentation TMDB movies details
 
-`jaffle_shop` is a fictional ecommerce store.
+## Objective
+The goal of this dbt project is to transform raw movie-related data into clean, structured datasets that facilitate analytical insights.
 
-This [dbt](https://www.getdbt.com/) project is for testing out code.
+## Key Features
 
-The source code can be found [here](https://github.com/clrcrl/jaffle_shop).
+* Data Cleaning & Standardization: Removes duplicates, standardizes column names, and ensures consistency across datasets.
+
+* Aggregations & Calculations:
+
+    - Calculates average movie ratings.
+
+    - Aggregates genres into lists per movie.
+
+    - Counts movie appearances per actor.
+
+* Join Optimizations: Efficiently combines multiple sources to produce meaningful insights.
 
 {% enddocs %}

@@ -7,14 +7,15 @@ with
             tagline,
             overview,
             release_date,
+            popularity,
             rating_avg,
+            vote_count,
             budget_usd,
             revenue_usd,
-            extracted_at_utc::date as extracted_date_utc,
             extracted_at_utc
 
         from {{ source("raw", "movies") }}
-        limit 10
+        where extracted_at_utc::date = current_date
     )
 
 select * from final

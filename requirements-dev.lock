@@ -64,6 +64,8 @@ filelock==3.16.1
     # via virtualenv
 fonttools==4.55.3
     # via matplotlib
+greenlet==3.1.1
+    # via sqlalchemy
 identify==2.6.3
     # via pre-commit
 idna==3.10
@@ -180,6 +182,7 @@ six==1.17.0
     # via isodate
     # via minimal-snowplow-tracker
     # via python-dateutil
+sqlalchemy==2.0.38
 sqlparse==0.5.3
     # via dbt-core
 text-unidecode==1.3
@@ -199,6 +202,7 @@ typing-extensions==4.12.2
     # via pydantic-core
     # via pylint
     # via referencing
+    # via sqlalchemy
 tzdata==2024.2
     # via pandas
 urllib3==2.3.0

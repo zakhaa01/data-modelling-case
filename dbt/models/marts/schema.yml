@@ -1,0 +1,61 @@
+version: 2
+
+models:
+
+  - name: marts__count_actors_popularity
+    description: A mart with most frequently seen actors and the average rating of their films.
+    columns:
+      - name: actor_id
+        description: Unique TMDB actor id.
+        tests:
+          - unique
+          - not_null
+      - name: actor_name
+        description: Name of the actor.
+        tests:
+          - not_null
+      - name: movie_count
+        description: Count of movies where this actor played.
+        tests:
+          - not_null
+      - name: avg_rating
+        description: Average rating of its movies.
+        tests:
+          - not_null
+
+  - name: marts__genres_popularity
+    description: A mart with most popular genres and average popularity.
+    columns:
+      - name: genre_id
+        description: Unique TMDB genre id.
+        tests:
+          - unique
+          - not_null
+      - name: genre_name
+        description: Name of the genre.
+        tests:
+          - not_null
+      - name: movie_count
+        description: Count of this genre movies.
+        tests:
+          - not_null
+      - name: avg_genre_popularity
+        description: Average populatiry of its movies.
+        tests:
+          - not_null
+
+  - name: marts__movie_genre
+    description: A mart with genre names of each movie.
+    columns:
+      - name: movie_id
+        description: Unique TMDB movie id.
+        tests:
+          - not_null
+      - name: title
+        description: Name of the movie.
+        tests:
+          - not_null
+      - name: genre_name
+        description: Name of the genre.
+        tests:
+          - not_null

@@ -1,20 +1,14 @@
 with
     final as (
         select
+            {{ dbt_utils.generate_surrogate_key(["movie_id", "genre_id"]) }} as surrogate_key,
             movie_id,
-            title,
-            country_code,
-            tagline,
-            overview,
-            release_date,
-            rating_avg,
-            budget_usd,
-            revenue_usd,
-            extracted_at_utc::date as extracted_date_utc,
+            genre_id,
+            genre_name,
             extracted_at_utc
 
-        from {{ source("raw", "movies") }}
-        limit 10
+        from {{ source("raw", "movies_genre") }}
+        where extracted_at_utc::date = current_date
     )
 
 select * from final
