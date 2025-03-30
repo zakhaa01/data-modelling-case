@@ -1,22 +1,23 @@
 [project]
 name = "data-modelling-case"
 version = "0.1.0"
-description = "ETL Process for Data Modelling pet project."  # TODO: update
+description = "TMDB extraction & DBT modelling pet-project"
 authors = [
     {name = "Anastasiia Zakharova <zakhaa01>"},
 ]
 dependencies = [
-    # TODO: update
     "pre-commit==3.6.2",
     "pylint==3.1.0",
     "pandas==2.2.3",
     "matplotlib==3.9.2",
     "seaborn==0.13.2",
     "numpy==2.0.2",
+    "dbt-core==1.8.3",
+    "dbt-postgres==1.8.2",
+    "sqlalchemy==2.0.38",
     "requests==2.32.3",
-    "sqlalchemy==2.0.37",
-    "psycopg2>=2.9.10",
-    "psycopg2-binary>=2.9.10",
+    "psycopg2==2.9.10",
+    "psycopg2-binary==2.9.10",
 ]
 readme = "README.md"
 requires-python = ">= 3.9"
@@ -26,5 +27,48 @@ managed = true
 virtual = true
 dev-dependencies = []
 
-[tool.mypy]
-disable_error_code = "import-untyped"
+[tool.pylint.main]
+py-version = "3.9"
+
+[tool.pylint.basic]
+good-names = ["i", "j", "k", "ex", "Run", "df", "_"]
+
+[tool.pylint."messages control"]
+disable = [
+    "raw-checker-failed",
+    "bad-inline-option",
+    "locally-disabled",
+    "file-ignored",
+    "suppressed-message",
+    "useless-suppression",
+    "deprecated-pragma",
+    "use-symbolic-message-instead",
+    "use-implicit-booleaness-not-comparison-to-string",
+    "use-implicit-booleaness-not-comparison-to-zero",
+    "duplicate-code",
+    "import-error",
+]
+
+[tool.sqlfluff.core]
+exclude_rules = "layout.indent, layout.cte_bracket, layout.cte_newline, layout.select_targets, layout.spacing, structure.column_order"
+templater = "dbt"
+dialect = "postgres"
+max_line_length = 100
+
+[tool.sqlfluff.templater.dbt]
+project_dir = "./dbt"
+profiles_dir = "./dbt"
+
+[tool.sqlfluff.rules]
+capitalisation_policy = "lower"
+extended_capitalisation_policy = "lower"
+
+[tool.sqlfluff.rules.convention.terminator]
+multiline_newline = true
+
+[tool.sqlfluff.rules.layout.long_lines]
+ignore_comment_clauses = true
+ignore_comment_lines = true
+
+[tool.sqlfluff.rules.references.keywords]
+ignore_words = "id"

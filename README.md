@@ -1,4 +1,4 @@
-# Music Studio Data Case  # TODO; update
+# Data Modelling Case
 
 [![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/PyCQA/pylint)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -6,18 +6,17 @@
 [![Rye](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/rye/main/artwork/badge.json)](https://rye-up.com)
 
 ## Overview
-Pet-project to demonstrate programming skills, ability to interpret and analyze data.
-This is a project for analyzing the test music data set in SQLite database. The main goal is to research sales, genre popularity and customer preferences.
+This is an ELT project for extracting TMDB movie details through API calls, loading it to database and transforming data.
+The main goal is to build analytical dataset, schedule and monitior workflows.
 
 ## Technology stack
-* <b>Python</b> is used as the primary program language for defining processing logic.
-* <b>SQLite</b> is used as the primary data source & RDBMS.
+* <b>Python</b> is used as the primary programming language for set of scripts.
+* <b>PostgreSQL</b> is used as the primary storage.
+* <b>DBT</b> is used as the data transformation tool.
+* <b>Airflow</b> is used as task orchestration tool.
 
 ### Python libraries
 
-#### Data Wrangling
-* <b>Pandas</b> for basic ETL functions such as reading data from sending queries for establishing connection and transforming row data for plotting.
-
-#### Visualization
-* <b>Matplotlib</b> for changing plot settings for data needing.
-* <b>Seaborn</b> for creating bar plots and scatter plots to visualize data analysis.
+* <b>Pandas</b> for basic ETL functions.
+* <b>SQLAlchemy</b> for database connections.
+* <b>Requests</b> for interacting with API.

@@ -1,0 +1,122 @@
+version: 2
+
+models:
+
+  - name: stg__daily_movies
+    description: A model with daily updated top rated movies extracted from TMDB API.
+    columns:
+      - name: movie_id
+        description: Unique TMDB movie id.
+        tests:
+          - unique
+          - not_null
+      - name: title
+        description: Movie title.
+        tests:
+          - not_null
+      - name: country_code
+        description: Country code where the movie made by.
+        tests:
+          - not_null
+      - name: tagline
+        description: The tagline of the movie.
+        tests:
+          - unique
+          - not_null
+      - name: overview
+        description: Short movie overview.
+        tests:
+          - unique
+          - not_null
+      - name: release_date
+        description: Local timezone release date.
+        tests:
+          - not_null
+      - name: popularity
+        description: The count of movie views.
+        tests:
+          - not_null
+      - name: rating_avg
+        description: Average rating of the movie.
+        tests:
+          - not_null
+      - name: vote_count
+        description: Count of votes.
+        tests:
+          - not_null
+      - name: budget_usd
+        description: Movie budget in USD.
+        tests:
+          - not_null
+      - name: revenue_usd
+        description: Movie revenue in USD.
+        tests:
+          - not_null
+      - name: extracted_at_utc
+        description: Timestamp of the API data extraction.
+        tests:
+          - not_null
+
+  - name: stg__daily_credits
+    description: A model with daily updated top rated movies credits from TMDB API.
+    columns:
+      - name: movie_id
+        description: Unique TMDB movie id.
+        tests:
+          - not_null
+      - name: actor_id
+        description: Unique TMDB actor id.
+        tests:
+          - not_null
+      - name: actor_name
+        description: Name of the actor.
+        tests:
+          - not_null
+      - name: character_name
+        description: Character name who played by assotiated actor.
+        tests:
+          - not_null
+      - name: extracted_at_utc
+        description: Timestamp of the API data extraction.
+        tests:
+          - not_null
+
+  - name: stg__daily_genres
+    description: A model with daily updated top rated movies genres from TMDB API.
+    columns:
+      - name: movie_id
+        description: Unique TMDB movie id.
+        tests:
+          - not_null
+      - name: genre_id
+        description: Unique TMDB genre id.
+        tests:
+          - not_null
+      - name: genre_name
+        description: Name of the genre.
+        tests:
+          - not_null
+      - name: extracted_at_utc
+        description: Timestamp of the API data extraction.
+        tests:
+          - not_null
+
+  - name: stg__daily_similar
+    description: A model with daily updated similar movies to top rated movies from TMDB API.
+    columns:
+      - name: movie_id
+        description: Unique TMDB movie id.
+        tests:
+          - not_null
+      - name: similar_movie_id
+        description: Unique TMDB similar movie id.
+        tests:
+          - not_null
+      - name: similar_movie_name
+        description: Name of the similar movie.
+        tests:
+          - not_null
+      - name: extracted_at_utc
+        description: Timestamp of the API data extraction.
+        tests:
+          - not_null

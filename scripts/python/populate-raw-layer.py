@@ -211,7 +211,9 @@ def main():
                 "tagline": "tagline",
                 "overview": "overview",
                 "release_date": "release_date",
+                "popularity": "popularity",
                 "rating_avg": "vote_average",
+                "vote_count": "vote_count",
                 "budget_usd": "budget",
                 "revenue_usd": "revenue",
             },
@@ -249,7 +251,7 @@ def main():
     log.info("START: TMDB data processing initiated...")
 
     engine = get_engine()
-    movie_ids = get_top_rated_movies(pages=10)
+    movie_ids = get_top_rated_movies(pages=50)
 
     for table_name, table_config in tables_config.items():
         process_tmdb_data(engine, movie_ids, table_name, table_config)
