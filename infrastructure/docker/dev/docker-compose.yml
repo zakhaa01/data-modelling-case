@@ -12,7 +12,7 @@ services:
     #     "psql -h postgres -U ${PGUSER} -d ${PGDATABASE} -f admin-db-init/init.sql --set=pgdatabase=${PGDATABASE}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ../init.sql:/admin-db-init/init.sql
+      - ../../init.sql:/admin-db-init/init.sql
     ports:
       - "5432:5432"
 
